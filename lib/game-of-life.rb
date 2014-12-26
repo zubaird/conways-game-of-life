@@ -47,10 +47,10 @@ end
 
 class Cell 
 
-	attr_accessor :cell_address, :alive, :dead
+	attr_accessor :cell_address, :alive
 
 	def initialize(cell_address = [1,1])
-		alive
+		dead = false
 		@cell_address = cell_address
 	end
 
@@ -60,16 +60,28 @@ class Cell
 		current_cell = array_grid[row][column]
 	end
 
-	def alive
-		alive = true
-		dead = false
-		"#"
+	def is_not_alive?
+		@dead == true
 	end
 
-	def dead
-		dead = true
-		alive = false
-		"-"
+	def is_alive?
+		@dead == false
+	end
+
+	def icon
+		if is_not_alive?
+			"-"
+		else
+			"#"
+		end
+	end
+
+	def alive
+		@dead = false
+	end
+
+	def kill
+		@dead = true
 	end
 
 	def cell_address=(value)
@@ -82,9 +94,6 @@ class Cell
 		
 		column = @cell_address[0] + 1
 		row = @cell_address[1] + 1
-
-		p column
-		p row
 
 		i = 0
 		j = 0
@@ -102,17 +111,47 @@ class Cell
 
 	def under_population(array_grid)
 		
-		alive_neighbours = 0
-		
+		alive_neighbours_count = 0
 
 		neighbours_in(array_grid).each do |neighbouring_cell_address|
 			column = neighbouring_cell_address[0]
 			row = neighbouring_cell_address[1]
-			alive_neighbours += 1 if array_grid[column][row].alive == true
+
+			alive_neighbours_count += 1 if array_grid[column][row].is_not_alive? == false
 		end
 
-		current_cell_in(array_grid).dead if alive_neighbours <= 1
+		current_cell_in(array_grid).kill if alive_neighbours_count <= 1
 	end
+
+
+	def over_population(array_grid)
+		
+		alive_neighbours_count = 0
+		
+		neighbours_in(array_grid).each do |neighbouring_cell_address|
+			column = neighbouring_cell_address[0]
+			row = neighbouring_cell_address[1]
+
+			alive_neighbours_count += 1 if array_grid[column][row].is_not_alive? == false
+		end
+
+		current_cell_in(array_grid).kill if alive_neighbours_count >= 4
+	end
+
+
+	# def lives_on
+
+	# 	alive_neighbours_count = 0
+		
+	# 	neighbours_in(array_grid).each do |neighbouring_cell_address|
+	# 		column = neighbouring_cell_address[0]
+	# 		row = neighbouring_cell_address[1]
+	# 		alive_neighbours_count += 1 if array_grid[column][row].alive == true
+	# 	end
+
+	# 	current_cell_in(array_grid).alive if alive_neighbours_count > 1
+
+	# end
 
 end
 

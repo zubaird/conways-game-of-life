@@ -96,11 +96,19 @@ describe Cell do
 	end
 
 	it "looks like '#' when it is #alive" do
-		expect(@cell.alive).to eq("#")
+		alive_cell = Cell.new
+
+		alive_cell.alive
+
+		expect(alive_cell.icon).to eq("#")
 	end
 
-	it "looks like '-' when it is #dead" do
-		expect(@cell.dead).to eq("-")
+	it "looks like '-' when #kill" do
+		dead_cell = Cell.new
+
+		dead_cell.kill
+
+		expect(dead_cell.icon).to eq("-")
 	end
 
 	it "knows its cell_address" do
@@ -129,21 +137,30 @@ describe Cell do
 	end
 
 	describe "#under_population" do 
-		it 'cells die when it has 1 or less live neighbours' do
+		it 'cell dies when it has 1 or less live neighbours' do
+			cell = @grid_rows[5][5]
+			cell.under_population(@grid_rows)
 
-			die = @grid_rows[5][5].under_population(@grid_rows)
-
-			expect(die).to eq("-")
-
+			expect(cell.is_alive?).to eq(false)
 		end
 	end
 
 	describe "#over_population" do 
-		it 'cells die when it has 4 or more live neighbours'
+		it 'cell dies when it has 4 or more live neighbours' do
+			cell = @grid_rows[5][5]
+			cell.over_population(@grid_rows)
+
+			expect(cell.is_alive?).to eq(false)
+		end
 	end
 	
-	describe "#lives_on" do 
-		it 'cells live for another generation when it has 2 or 3 live neighbours'
+	
+	xdescribe "#lives_on" do 
+		it 'cell lives for another generation when it has 2 or 3 live neighbours' do
+			lives = @grid_rows[5][5].lives_on(@grid_rows)
+
+			expect(lives).to eq("#")
+		end
 	end
 
 
