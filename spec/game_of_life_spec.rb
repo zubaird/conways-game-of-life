@@ -184,6 +184,7 @@ describe Cell do
 		it 'cell lives for another generation when it has 2 or 3 live neighbours' do
 			cell = @grid_rows[5][5]
 
+			cell.alive
 
 			live_neighbour = @grid_rows[4][4].alive
 			live_neighbour = @grid_rows[4][5].alive
@@ -199,11 +200,49 @@ describe Cell do
 
 			expect(cell.is_alive?).to eq(true)
 		end
+
+		it 'is not born with only 2 live neighbors' do
+			cell = @grid_rows[5][5]
+
+			cell.kill
+
+			live_neighbour = @grid_rows[4][4].alive
+			live_neighbour = @grid_rows[4][5].alive
+			dead_neighbour = @grid_rows[4][6].kill
+			dead_neighbour = @grid_rows[5][4].kill
+			dead_neighbour = @grid_rows[5][6].kill
+			dead_neighbour = @grid_rows[6][4].kill
+			dead_neighbour = @grid_rows[6][5].kill
+			dead_neighbour = @grid_rows[6][6].kill
+
+
+			cell.lives_on(@grid_rows)
+
+			expect(cell.is_not_alive?).to eq(true)
+		end
 	end
 
 
 	describe "#is_born" do 
-		it 'cell is born or continues to live if it has exactly 3 live neighbours'
+		it 'cell is born or continues to live if it has exactly 3 live neighbours' do
+			cell = @grid_rows[5][5]
+
+			cell.kill
+
+			live_neighbour = @grid_rows[4][4].alive
+			live_neighbour = @grid_rows[4][5].alive
+			dead_neighbour = @grid_rows[4][6].alive
+			dead_neighbour = @grid_rows[5][4].kill
+			dead_neighbour = @grid_rows[5][6].kill
+			dead_neighbour = @grid_rows[6][4].kill
+			dead_neighbour = @grid_rows[6][5].kill
+			dead_neighbour = @grid_rows[6][6].kill
+
+
+			cell.is_born(@grid_rows)
+
+			expect(cell.is_alive?).to eq(true)
+		end
 	end
 
 end

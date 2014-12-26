@@ -151,8 +151,26 @@ class Cell
 			alive_neighbours_count += 1 if array_grid[column][row].is_alive? == true
 		end
 
-		current_cell_in(array_grid).alive if alive_neighbours_count == 2 || alive_neighbours_count == 3
+		if alive_neighbours_count == 2 && current_cell_in(array_grid).is_alive?
+			current_cell_in(array_grid).alive
+		else
+			current_cell_in(array_grid).kill
+		end
 	end
+
+	def is_born(array_grid)
+
+		alive_neighbours_count = 0
+
+		neighbours_in(array_grid).each do |neighbouring_cell_address|
+			column = neighbouring_cell_address[0]
+			row = neighbouring_cell_address[1]
+			alive_neighbours_count += 1 if array_grid[column][row].is_alive? == true
+		end
+
+		current_cell_in(array_grid).alive if alive_neighbours_count == 3
+	end
+
 
 end
 
