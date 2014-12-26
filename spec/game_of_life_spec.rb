@@ -126,7 +126,6 @@ describe Cell do
 			[6,5],
 			[6,4],
 			[5,6],
-			[5,5],
 			[5,4],
 			[4,6],
 			[4,5],
@@ -138,28 +137,67 @@ describe Cell do
 
 	describe "#under_population" do 
 		it 'cell dies when it has 1 or less live neighbours' do
+
 			cell = @grid_rows[5][5]
+
+			cell.alive
+
+			@grid_rows[4][4].kill
+			@grid_rows[4][5].kill
+			@grid_rows[4][6].kill
+			@grid_rows[5][4].kill
+			@grid_rows[5][6].kill
+			@grid_rows[6][4].kill
+			@grid_rows[6][5].kill
+			@grid_rows[6][6].kill
+
 			cell.under_population(@grid_rows)
 
-			expect(cell.is_alive?).to eq(false)
+
+			expect(cell.is_not_alive?).to eq(true)
 		end
 	end
 
 	describe "#over_population" do 
 		it 'cell dies when it has 4 or more live neighbours' do
 			cell = @grid_rows[5][5]
+
+			cell.alive
+
+			@grid_rows[4][4].alive
+			@grid_rows[4][5].alive
+			@grid_rows[4][6].alive
+			@grid_rows[5][4].alive
+			@grid_rows[5][6].kill
+			@grid_rows[6][4].kill
+			@grid_rows[6][5].kill
+			@grid_rows[6][6].kill
+
 			cell.over_population(@grid_rows)
 
-			expect(cell.is_alive?).to eq(false)
+			expect(cell.is_not_alive?).to eq(true)
 		end
 	end
 	
-	
-	xdescribe "#lives_on" do 
-		it 'cell lives for another generation when it has 2 or 3 live neighbours' do
-			lives = @grid_rows[5][5].lives_on(@grid_rows)
 
-			expect(lives).to eq("#")
+	describe "#lives_on" do 
+		it 'cell lives for another generation when it has 2 or 3 live neighbours' do
+			cell = @grid_rows[5][5]
+
+
+			live_neighbour = @grid_rows[4][4].alive
+			live_neighbour = @grid_rows[4][5].alive
+			dead_neighbour = @grid_rows[4][6].kill
+			dead_neighbour = @grid_rows[5][4].kill
+			dead_neighbour = @grid_rows[5][6].kill
+			dead_neighbour = @grid_rows[6][4].kill
+			dead_neighbour = @grid_rows[6][5].kill
+			dead_neighbour = @grid_rows[6][6].kill
+
+
+			cell.lives_on(@grid_rows)
+
+			expect(cell.is_alive?).to eq(true)
 		end
 	end
 

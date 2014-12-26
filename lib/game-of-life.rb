@@ -91,7 +91,7 @@ class Cell
 
 	def neighbours_in(array_grid)
 		neighbour_group = []
-		
+		current_cell_address = current_cell_in(array_grid).cell_address
 		column = @cell_address[0] + 1
 		row = @cell_address[1] + 1
 
@@ -106,6 +106,8 @@ class Cell
 			end
 			i += 1
 		end
+
+		neighbour_group.delete(current_cell_address)
 		neighbour_group
 	end
 
@@ -117,7 +119,7 @@ class Cell
 			column = neighbouring_cell_address[0]
 			row = neighbouring_cell_address[1]
 
-			alive_neighbours_count += 1 if array_grid[column][row].is_not_alive? == false
+			alive_neighbours_count += 1 if array_grid[column][row].is_alive? == true
 		end
 
 		current_cell_in(array_grid).kill if alive_neighbours_count <= 1
@@ -132,26 +134,25 @@ class Cell
 			column = neighbouring_cell_address[0]
 			row = neighbouring_cell_address[1]
 
-			alive_neighbours_count += 1 if array_grid[column][row].is_not_alive? == false
+			alive_neighbours_count += 1 if array_grid[column][row].is_alive? == true
 		end
 
 		current_cell_in(array_grid).kill if alive_neighbours_count >= 4
 	end
 
 
-	# def lives_on
+	def lives_on(array_grid)
 
-	# 	alive_neighbours_count = 0
+		alive_neighbours_count = 0
 		
-	# 	neighbours_in(array_grid).each do |neighbouring_cell_address|
-	# 		column = neighbouring_cell_address[0]
-	# 		row = neighbouring_cell_address[1]
-	# 		alive_neighbours_count += 1 if array_grid[column][row].alive == true
-	# 	end
+		neighbours_in(array_grid).each do |neighbouring_cell_address|
+			column = neighbouring_cell_address[0]
+			row = neighbouring_cell_address[1]
+			alive_neighbours_count += 1 if array_grid[column][row].is_alive? == true
+		end
 
-	# 	current_cell_in(array_grid).alive if alive_neighbours_count > 1
-
-	# end
+		current_cell_in(array_grid).alive if alive_neighbours_count == 2 || alive_neighbours_count == 3
+	end
 
 end
 
