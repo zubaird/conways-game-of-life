@@ -72,8 +72,9 @@ end
 describe Cell do 
 
 	before do
+		random_life = rand(0..100)
 		@game = LifeBoard.new(10,10)
-		@cell = Cell.new
+		@cell = Cell.new(random_life)
 		@grid_rows = @game.array_grid
 	end
 
@@ -96,19 +97,21 @@ describe Cell do
 	end
 
 	it "looks like '#' when it is #alive" do
-		alive_cell = Cell.new
+		random_life = rand(0..100)
+		alive_cell = Cell.new(random_life)
 
 		alive_cell.alive
 
-		expect(alive_cell.icon).to eq("#")
+		expect(alive_cell.icon).to eq("X")
 	end
 
 	it "looks like '-' when #kill" do
-		dead_cell = Cell.new
+		random_life = rand(0..100)
+		dead_cell = Cell.new(random_life)
 
 		dead_cell.kill
 
-		expect(dead_cell.icon).to eq("-")
+		expect(dead_cell.icon).to eq("0")
 	end
 
 	it "knows its cell_address" do
@@ -240,6 +243,28 @@ describe Cell do
 
 
 			cell.is_born(@grid_rows)
+
+			expect(cell.is_alive?).to eq(true)
+		end
+	end
+
+		describe "at the edge of grid" do 
+		it 'should still work' do
+
+			cell = @grid_rows[0][0]
+
+			cell.alive
+
+			@grid_rows[-1][-1].alive
+			@grid_rows[-1][0].alive
+			@grid_rows[-1][1].kill
+			@grid_rows[0][-1].kill
+			@grid_rows[0][1].kill
+			@grid_rows[1][-1].kill
+			@grid_rows[1][0].kill
+			@grid_rows[1][1].kill
+
+			cell.lives_on(@grid_rows)
 
 			expect(cell.is_alive?).to eq(true)
 		end

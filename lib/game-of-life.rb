@@ -1,5 +1,3 @@
-require 'pry'
-
 class LifeBoard
 	attr_accessor :number_of_columns, :number_of_rows, :array_grid
 
@@ -14,13 +12,15 @@ class LifeBoard
 		build_columns = Array.new
 		i = 0
 		while i < number_of_columns do 
-			build_columns << Cell.new
+			random_life = rand(0..100)
+			build_columns << Cell.new(random_life)
 			i += 1
 		end
 		build_columns
 	end
 
 	def build_array_for_grid
+		array_columns
 		@array_grid = Array.new
 
 		number_of_rows.times do 
@@ -40,24 +40,35 @@ class LifeBoard
 			end	
 			i += 1
 		end
-
 		@array_grid
 	end
 end
 
 class Cell 
 
-	attr_accessor :cell_address, :alive
+	attr_accessor :cell_address, :alive, :life
 
-	def initialize(cell_address = [1,1])
-		dead = false
+	def initialize(random_life, cell_address = [1,1])
+		if random_life.even?
+			alive
+		else
+			kill
+		end
 		@cell_address = cell_address
+	end
+
+	def run(array_grid)
+		neighbours_in(array_grid)
+		under_population(array_grid)
+		over_population(array_grid)
+		lives_on(array_grid)
+		is_born(array_grid)
 	end
 
 	def current_cell_in(array_grid)
 		column = @cell_address[0]
 		row = @cell_address[1]
-		current_cell = array_grid[row][column]
+		current_cell = array_grid[column][row]
 	end
 
 	def is_not_alive?
@@ -70,18 +81,20 @@ class Cell
 
 	def icon
 		if is_not_alive?
-			"-"
+			"0"
 		else
-			"#"
+			"X"
 		end
 	end
 
 	def alive
 		@dead = false
+		@life = true
 	end
 
 	def kill
 		@dead = true
+		@life = false
 	end
 
 	def cell_address=(value)
@@ -170,8 +183,6 @@ class Cell
 
 		current_cell_in(array_grid).alive if alive_neighbours_count == 3
 	end
-
-
 end
 
 
