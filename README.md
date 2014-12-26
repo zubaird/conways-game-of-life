@@ -24,9 +24,9 @@ Other Details:
 
 The game is set on a 2-d grid system, where each square in the grid represents a cell.  This version is implemented using command-line characters only.
 
-Alive cells are represented by:  "#"
+Alive cells are represented by:  "X"
 
-Dead cells are represented by: "-" 
+Dead cells are represented by: "0" 
 
 
 
