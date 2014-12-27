@@ -81,7 +81,7 @@ class Cell
 
 	def icon
 		if is_not_alive?
-			"0"
+			" "
 		else
 			"X"
 		end
