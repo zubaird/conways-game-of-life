@@ -105,13 +105,13 @@ describe Cell do
 		expect(alive_cell.icon).to eq("X")
 	end
 
-	it "looks like '-' when #kill" do
+	it "looks like ' ' when #kill" do
 		random_life = rand(0..100)
 		dead_cell = Cell.new(random_life)
 
 		dead_cell.kill
 
-		expect(dead_cell.icon).to eq("0")
+		expect(dead_cell.icon).to eq(" ")
 	end
 
 	it "knows its cell_address" do
